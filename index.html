@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="pl">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>EnergyLab IoT Dashboard</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="app-frame">
+        <aside class="sidebar">
+            <div class="brand">
+                <span class="brand-mark">EL</span>
+                <div>
+                    <strong>EnergyLab</strong>
+                    <small>IoT Dashboard</small>
+                </div>
+            </div>
+
+            <nav class="nav-list" aria-label="Nawigacja panelu">
+                <a href="#dashboard">Dashboard</a>
+                <a href="#analysis">Analiza</a>
+                <a href="#records">Dane</a>
+                <a href="esp32-emulator.html">Emulator ESP32</a>
+            </nav>
+        </aside>
+
+        <main class="content">
+            <header class="topbar" id="dashboard">
+                <div>
+                    <p class="eyebrow">System monitorowania energii</p>
+                    <h1>Panel zużycia energii urządzeń</h1>
+                </div>
+            </header>
+
+            <section class="summary-grid" aria-label="Podsumowanie danych">
+                <article class="summary-card">
+                    <span>Liczba pomiarów</span>
+                    <strong id="summaryCount">--</strong>
+                    <small>rekordy w zbiorze</small>
+                </article>
+                <article class="summary-card">
+                    <span>Zakres danych</span>
+                    <strong id="summaryRange">--</strong>
+                    <small>dni pomiarowe</small>
+                </article>
+                <article class="summary-card">
+                    <span>Energia łącznie</span>
+                    <strong><span id="summaryEnergy">--</span> kWh</strong>
+                    <small>suma scenariuszy</small>
+                </article>
+                <article class="summary-card">
+                    <span>Maksymalna moc</span>
+                    <strong><span id="summaryMaxPower">--</span> W</strong>
+                    <small>największy pik</small>
+                </article>
+            </section>
+
+            <section class="panel control-panel" aria-label="Sterowanie zasilaniem">
+                <div>
+                    <p class="eyebrow">Sterowanie obciążeniem</p>
+                    <h2>Przekaźnik zasilania urządzenia</h2>
+                    <p class="panel-note">
+                        Symulacja komendy, którą docelowo ESP32 mogłoby odebrać i wykonać na module przekaźnika.
+                    </p>
+                </div>
+                <div class="relay-control">
+                    <div class="relay-state" id="relayStateLabel">Sprawdzanie stanu</div>
+                    <small id="relayUpdated">Brak danych</small>
+                    <button class="control-button" id="powerToggleButton" type="button">Odłącz zasilanie</button>
+                </div>
+            </section>
+
+            <section class="panel controls-panel" aria-label="Kanały telemetryczne">
+                <div>
+                    <p class="eyebrow">Kanały telemetryczne</p>
+                    <h2>Aktualny widok parametrów</h2>
+                </div>
+                <div class="parameter-controls" id="parameterControls"></div>
+            </section>
+
+            <section class="metrics-grid" id="metricsGrid" aria-label="Najnowszy pomiar"></section>
+
+            <section class="work-grid">
+                <article class="panel chart-panel">
+                    <div class="panel-heading">
+                        <div>
+                            <p class="eyebrow">Ostatnie próbki</p>
+                            <h2>Wybrane parametry w czasie</h2>
+                        </div>
+                        <span id="lastUpdate">Brak danych</span>
+                    </div>
+                    <div class="chart-box">
+                        <canvas id="overviewChart"></canvas>
+                    </div>
+                </article>
+            </section>
+
+            <section class="analytics-grid" id="analysis">
+                <article class="panel daily-panel">
+                    <div class="panel-heading daily-heading">
+                        <div>
+                            <p class="eyebrow">Analiza dzienna</p>
+                            <h2>Pomiar wybranego urządzenia</h2>
+                        </div>
+                        <div class="daily-controls">
+                            <label>
+                                <span>Data i urządzenie</span>
+                                <select id="dailyDateSelect"></select>
+                            </label>
+                            <label>
+                                <span>Parametr</span>
+                                <select id="dailyMetricSelect"></select>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="daily-summary" id="dailySummary">Brak danych.</div>
+                    <div class="chart-box">
+                        <canvas id="dailyChart"></canvas>
+                    </div>
+                </article>
+
+                <article class="panel compare-panel">
+                    <div class="panel-heading">
+                        <div>
+                            <p class="eyebrow">Porównanie</p>
+                            <h2>Zużycie energii według urządzeń</h2>
+                        </div>
+                    </div>
+                    <div class="chart-box compact-chart">
+                        <canvas id="comparisonChart"></canvas>
+                    </div>
+                </article>
+            </section>
+
+            <section class="panel records-panel" id="records" aria-label="Tabela pomiarów">
+                <div class="panel-heading daily-heading">
+                    <div>
+                        <p class="eyebrow">Rekordy pomiarowe</p>
+                        <h2>Ostatnie dane zapisane w bazie</h2>
+                    </div>
+                    <div class="daily-controls">
+                        <label>
+                            <span>Filtr daty</span>
+                            <select id="recordsDateSelect"></select>
+                        </label>
+                        <button class="export-button" id="exportCsvButton" type="button">Pobierz CSV</button>
+                    </div>
+                </div>
+                <div class="table-scroll">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Czas</th>
+                                <th>Urządzenie</th>
+                                <th>Napięcie</th>
+                                <th>Natężenie</th>
+                                <th>Moc</th>
+                                <th>Energia</th>
+                                <th>PF</th>
+                                <th>Moc pozorna</th>
+                            </tr>
+                        </thead>
+                        <tbody id="recordsBody"></tbody>
+                    </table>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <script src="assets/js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,7 @@
+# Runtime state
+api/control-state.json
+
+# System/editor noise
+.DS_Store
+Thumbs.db
+*.log

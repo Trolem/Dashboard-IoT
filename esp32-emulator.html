@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="pl">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Emulator ESP32</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+    <div class="app-frame">
+        <aside class="sidebar">
+            <div class="brand">
+                <span class="brand-mark">E32</span>
+                <div>
+                    <strong>Emulator ESP32</strong>
+                    <small>Relay client</small>
+                </div>
+            </div>
+
+            <nav class="nav-list" aria-label="Nawigacja emulatora">
+                <a href="index.html">Dashboard</a>
+                <a href="#state">Stan</a>
+            </nav>
+        </aside>
+
+        <main class="content">
+            <header class="topbar" id="state">
+                <div>
+                    <p class="eyebrow">Symulacja urządzenia wykonawczego</p>
+                    <h1>ESP32 odczytujące komendę przekaźnika</h1>
+                </div>
+            </header>
+
+            <section class="emulator-grid">
+                <article class="panel emulator-card">
+                    <p class="eyebrow">Przekaźnik</p>
+                    <h2 id="emulatorRelayState">Sprawdzanie stanu</h2>
+                    <div class="relay-visual" id="relayVisual">
+                        <span></span>
+                    </div>
+                    <p class="panel-note" id="emulatorDescription">
+                        Emulator odpytuje API i czeka na komendę z dashboardu.
+                    </p>
+                </article>
+
+                <article class="panel">
+                    <p class="eyebrow">GPIO</p>
+                    <h2 id="gpioState">--</h2>
+                    <p class="panel-note">
+                        W realnym układzie ten stan sterowałby wejściem modułu przekaźnika.
+                    </p>
+                </article>
+
+                <article class="panel">
+                    <p class="eyebrow">Obwód odbiornika</p>
+                    <h2 id="loadState">--</h2>
+                    <p class="panel-note" id="loadDescription">
+                        Symulowany przepływ prądu przez urządzenie podłączone do miernika.
+                    </p>
+                </article>
+            </section>
+        </main>
+    </div>
+
+    <script src="assets/js/emulator.js"></script>
+</body>
+</html>
