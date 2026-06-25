@@ -60,11 +60,11 @@ http://127.0.0.1:8080/
 
 ### Linux
 
-W systemie Debian/Ubuntu PHP CLI mozna zainstalowac poleceniami:
+W systemie Debian/Ubuntu PHP mozna zainstalowac poleceniami:
 
 ```text
 sudo apt update
-sudo apt install php-cli
+sudo apt install php
 ```
 
 Nastepnie w katalogu projektu:
@@ -122,3 +122,34 @@ Jesli port `8080` jest zajety, mozna uzyc np. `8081` albo `8082`.
 +-- index.html
 +-- README.md
 ```
+
+## Endpointy API
+
+Endpoint API to konkretny adres URL, pod ktory frontend wysyla zapytanie HTTP. W tym projekcie endpointami sa pliki PHP znajdujace sie w folderze `api`.
+
+| Metoda HTTP | Endpoint | Plik PHP | Opis |
+| --- | --- | --- | --- |
+| GET | `/api/latest.php` | `api/latest.php` | Zwraca najnowszy pomiar oraz aktualny stan przekaznika. |
+| GET | `/api/history.php` | `api/history.php` | Zwraca ostatnie probki wykorzystywane na glownym wykresie. |
+| GET | `/api/summary.php` | `api/summary.php` | Zwraca podsumowanie danych: liczbe pomiarow, zakres dat, energie laczna i maksymalna moc. |
+| GET | `/api/daily.php` | `api/daily.php` | Bez parametrow zwraca metadane: dostepne dni i parametry pomiarowe. |
+| GET | `/api/daily.php?date=2026-06-14&metric=moc` | `api/daily.php` | Zwraca serie danych dla wybranego dnia i parametru. |
+| GET | `/api/records.php` | `api/records.php` | Zwraca rekordy pomiarowe do tabeli. |
+| GET | `/api/records.php?date=2026-06-15&limit=30` | `api/records.php` | Zwraca rekordy z wybranego dnia z ograniczeniem liczby wierszy. |
+| GET | `/api/export_csv.php?date=2026-06-14` | `api/export_csv.php` | Zwraca plik CSV z rekordami pomiarowymi. |
+| GET | `/api/control.php` | `api/control.php` | Zwraca aktualny stan symulowanego przekaznika. |
+| POST | `/api/control.php` | `api/control.php` | Zapisuje nowy stan przekaznika wyslany z dashboardu. |
+
+## Przykladowe zapytanie POST
+
+Endpoint `api/control.php` przy metodzie POST przyjmuje dane JSON:
+
+```json
+{
+  "power_enabled": false
+}
+```
+
+Taka komenda symuluje odlaczenie zasilania odbiornika.
+
+
